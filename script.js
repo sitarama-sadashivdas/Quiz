@@ -5,13 +5,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fetchQuestions = async () => {
         try {
-            const response = await fetch('questions.json'); // Simulated server
-            const questions = await response.json();
-            return questions;
+            const response = await fetch('https://opentdb.com/api.php?amount=5&type=multiple'); // Fetch 5 questions
+            const data = await response.json();
+            return data.results.map((questionData) => {
+                const formattedQuestion = {
+                    question: decodeHTML(questionData.question),
+                    answers: {
+                        a: decodeHTML(questionData.correct_answer),
+                        b: decodeHTML(questionData.incorrect_answers[0]),
+                        c: decodeHTML(questionData.incorrect_answers[1]),
+                        d: decodeHTML(questionData.incorrect_answers[2]),
+                    },
+                    correctAnswer: 'a', // The correct answer will always be 'a' since we set it first
+                };
+
+                // Shuffle answers
+                const answersArray = Object.entries(formattedQuestion.answers);
+                for (let i = answersArray.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [answersArray[i], answersArray[j]] = [answersArray[j], answersArray[i]];
+                }
+
+                formattedQuestion.answers = Object.fromEntries(answersArray);
+
+                // Adjust correctAnswer based on shuffled answers
+                formattedQuestion.correctAnswer = answersArray.find(([key, value]) => value === questionData.correct_answer)[0];
+
+                return formattedQuestion;
+            });
         } catch (error) {
             console.error('Error fetching questions:', error);
             return [];
         }
+    };
+
+    const decodeHTML = (html) => {
+        const txt = document.createElement('textarea');
+        txt.innerHTML = html;
+        return txt.value;
     };
 
     const buildQuiz = (questions) => {
@@ -62,3 +93,4 @@ document.addEventListener('DOMContentLoaded', () => {
         submitButton.addEventListener('click', () => showResults(questions));
     });
 });
+
