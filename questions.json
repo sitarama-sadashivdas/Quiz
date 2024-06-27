@@ -1,0 +1,32 @@
+[
+    {
+        "question": "What is the capital of France?",
+        "answers": {
+            "a": "Berlin",
+            "b": "Madrid",
+            "c": "Paris",
+            "d": "Rome"
+        },
+        "correctAnswer": "c"
+    },
+    {
+        "question": "Who is the President of the USA?",
+        "answers": {
+            "a": "Donald Trump",
+            "b": "Barack Obama",
+            "c": "Joe Biden",
+            "d": "George Bush"
+        },
+        "correctAnswer": "c"
+    },
+    {
+        "question": "What is the capital of Japan?",
+        "answers": {
+            "a": "Seoul",
+            "b": "Tokyo",
+            "c": "Beijing",
+            "d": "Bangkok"
+        },
+        "correctAnswer": "b"
+    }
+]
